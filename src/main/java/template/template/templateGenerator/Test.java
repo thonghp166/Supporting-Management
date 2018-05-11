@@ -1,5 +1,6 @@
 package template.template.templateGenerator;
 
+import org.pushingpixels.substance.api.skin.SubstanceCeruleanLookAndFeel;
 import template.content.Content;
 
 import javax.swing.*;
@@ -12,16 +13,22 @@ import java.util.ArrayList;
 
 public class Test {
     public static void main(String[] args) {
-        try {
-            TemplateGenerator tg = new TemplateGenerator();
-            JFrame frame = new JFrame();
-            frame.setLayout(new BorderLayout());
-            frame.add(tg, BorderLayout.CENTER);
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setMinimumSize(new Dimension(400, 600));
-            frame.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(new SubstanceCeruleanLookAndFeel());
+                    TemplateGenerator tg = new TemplateGenerator();
+                    JFrame frame = new JFrame();
+                    frame.setLayout(new BorderLayout());
+                    frame.add(tg, BorderLayout.CENTER);
+                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    frame.setMinimumSize(new Dimension(400, 600));
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
