@@ -42,6 +42,8 @@ public class CostTemplateUI extends TemplateUI {
     Matcher matcher;
     /* timer used to constantly update UI */
     Timer timer;
+    /**/
+    private JPanel[] panels_months = new JPanel[12];
 
     /**
      * Public constructor
@@ -55,8 +57,8 @@ public class CostTemplateUI extends TemplateUI {
         panel_inner.setLayout(new BorderLayout());
 
         panel_textFields = new JPanel();
-        panel_textFields.setLayout(new GridLayout(0, 2, 4, 10));
-        panel_textFields.setBorder(UITitledBorder.getTitleBorder("Dự kiến      /      Thực tế"));
+        panel_textFields.setLayout(new GridLayout(0, 12, 4, 10));
+        //panel_textFields.setBorder(UITitledBorder.getTitleBorder("Dự kiến      /      Thực tế"));
 
         panel_labels = new JPanel();
         panel_labels.setLayout(new GridLayout(0, 1, 4, 10));
@@ -107,30 +109,37 @@ public class CostTemplateUI extends TemplateUI {
                 labels_content.add(contentLabel);
                 panel_labels.add(contentLabel);
             }
-            ArrayList<JTextField> costTextFields = generateCostTextFields(template.getContents().get(i));
-            while (!costTextFields.isEmpty()) {
-                JTextField estimateTextField = costTextFields.remove(0);
-                JTextField actualTextField = costTextFields.remove(0);
-                textFields_estimate.add(estimateTextField);
-                textFields_actual.add(actualTextField);
-                if (estimateTextField == null) {
-                    panel_textFields.add(new JLabel(""));
-                    panel_textFields.add(new JLabel(""));
-                } else {
-                    estimateTextField.setPreferredSize(dimension_textField);
-                    actualTextField.setPreferredSize(dimension_textField);
-                    panel_textFields.add(estimateTextField);
-                    panel_textFields.add(actualTextField);
+        }
+        for (int k = 0; k < 12; k++) {
+            panels_months[k] = new JPanel(new GridLayout(0, 2, 10, 10));
+            panels_months[k].setBorder(UITitledBorder.getTitleBorder("Tháng " + (k + 1)));
+            for (int i = 0; i < template.getContents().size(); i++) {
+                ArrayList<JTextField> costTextFields = generateCostTextFields(template.getContents().get(i));
+                while (!costTextFields.isEmpty()) {
+                    JTextField estimateTextField = costTextFields.remove(0);
+                    JTextField actualTextField = costTextFields.remove(0);
+                    textFields_estimate.add(estimateTextField);
+                    textFields_actual.add(actualTextField);
+                    if (estimateTextField == null) {
+                        JLabel label1 = new JLabel("Dự kiến", SwingConstants.CENTER);
+                        JLabel label2 = new JLabel("Thực tế", SwingConstants.CENTER);
+                        panels_months[k].add(label1);
+                        panels_months[k].add(label2);
+                    } else {
+                        estimateTextField.setPreferredSize(dimension_textField);
+                        actualTextField.setPreferredSize(dimension_textField);
+                        panels_months[k].add(estimateTextField);
+                        panels_months[k].add(actualTextField);
+                    }
                 }
-            }
-            JLabel label_total_estimate = new JLabel("0");
-            JLabel label_total_actual = new JLabel("0");
-            panel_labels.add(new JLabel("Tổng cộng"));
-            labels_total_estimate.add(label_total_estimate);
-            labels_total_actual.add(label_total_actual);
-            panel_textFields.add(label_total_estimate);
-            panel_textFields.add(label_total_actual);
-            /* set up components */
+                //JLabel label_total_estimate = new JLabel("0");
+                //JLabel label_total_actual = new JLabel("0");
+                //panel_labels.add(new JLabel("Tổng cộng"));
+                //labels_total_estimate.add(label_total_estimate);
+                //labels_total_actual.add(label_total_actual);
+                //panels_months[k].add(label_total_estimate);
+                //panels_months[k].add(label_total_actual);
+                /* set up components */
             /*labels_content[i] = new JLabel(template.getContents().get(i).getContent());
 
             textFields_estimate[i] = new JTextField();
@@ -142,14 +151,16 @@ public class CostTemplateUI extends TemplateUI {
             /*panel_labels.add(labels_content[i]);
             panel_textFields.add(textFields_estimate[i]);
             panel_textFields.add(textFields_actual[i]);*/
+            }
+            panel_textFields.add(panels_months[k]);
         }
         System.out.println(labels_content.size() + " " + textFields_actual.size());
-        this.setBorder(UITitledBorder.getTitleBorder(template.getName()));
+        this.setBorder(UITitledBorder.getTitleBorder("Chi phí năm " + template.getName()));
         Timer timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                detectInvalidInput();
-                updateTotal();
+                //detectInvalidInput();
+                //updateTotal();
             }
         });
         timer.start();
@@ -306,5 +317,28 @@ public class CostTemplateUI extends TemplateUI {
             e.printStackTrace();
         }
         panel_inner.updateUI();
+    }
+
+    public ArrayList<ArrayList<String>> getData(int month, String contentLayerTwo) {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+        int size = 0;
+        for (int i = 0; i < template.getContents().size(); i++) {
+            System.out.println(contentLayerTwo);
+            System.out.println(template.getContents().get(i).getContent());
+            if (contentLayerTwo.equals(template.getContents().get(i).getContent())) {
+                System.out.println("found");
+                size = template.getContents().get(i).getSubContents().size();
+            }
+        }
+        int start = textFields_actual.size() / 12 * (month - 1) + 1;
+        System.out.println("start = " + start);
+        for(int i = 0; i < size; i++) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(textFields_estimate.get(start + i).getText());
+            row.add(textFields_actual.get(start + i).getText());
+            data.add(row);
+        }
+        //for(int i = 0; i <)
+        return data;
     }
 }
