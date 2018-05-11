@@ -1,6 +1,7 @@
 package template.template;
 
 import basicComponents.UIBorder;
+import template.costTemplate.CostTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,11 @@ public class TemplatesAccessPanel extends JPanel {
      * @param template the template which the new button accesses to
      */
     public TemplateAccessButton addAccess(Template template) {
-        TemplateAccessButton templateAccessButton = new TemplateAccessButton(template.getName());
+        TemplateAccessButton templateAccessButton;
+        if (template instanceof CostTemplate)
+            templateAccessButton = new TemplateAccessButton("Chi phí năm " + template.getName());
+        else
+            templateAccessButton = new TemplateAccessButton(template.getName());
         templateAccessButton.setKey(template.getKey());
         templateAccessButton.setBackground(Color.CYAN);
         //update();
