@@ -119,7 +119,7 @@ public class UI extends JFrame {
         scrollPane_templateUI.getVerticalScrollBar().setUnitIncrement(16);
         //scrollPane_templateUI.setAutoscrolls(false);
         /* set up toolbar buttons */
-        button_save = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\ImageIcon\\saveIcon.png"));
+        button_save = new JButton(new ImageIcon("src\\basicComponents\\ImageIcon\\saveIcon.png"));
         button_save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,21 +129,35 @@ public class UI extends JFrame {
                 }
                 //System.out.println(templateUI.getData().get(0).get(0));
                 try {
-                    ArrayList<ArrayList<String>> data = showingTemplateUI.getData();
-                    /* test get data */
+                    if(showingTemplateUI instanceof CostTemplateUI) {
+                        System.out.println("true");
+                        CostTemplateUI cast = (CostTemplateUI) showingTemplateUI;
+                        for(int i = 0; i < cast.getTemplate().getContents().size(); i++) {
+                            for(int j = 0; j < 12; j++) {
+                                ArrayList<ArrayList<String>> data = cast.getData(j, cast.getTemplate().getContents().get(i).getContent());
+                                /* send to database function here */
+                                /**
+                                 * year = cast.getName();
+                                 * month = j;
+                                 * content = cast.getTemplate().getContents().get(i)
+                                 */
+                            }
+                        }
+                    }
+                    /*ArrayList<ArrayList<String>> data = showingTemplateUI.getData();
                     System.out.println(data.get(0).get(0));
                     for (int i = 0; i < data.size(); i++) {
                         for (int j = 0; j < data.get(i).size(); j++) {
                             System.out.print(data.get(i).get(j));
                         }
-                    }
+                    }*/
                 } catch (IndexOutOfBoundsException ie) {
                     ie.printStackTrace();
                 }
             }
         });
 
-        button_clear = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\clearIcon.png"));
+        button_clear = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\clearIcon.png"));
         button_clear.setToolTipText("Xóa");
         button_clear.addActionListener(new ActionListener() {
             @Override
@@ -156,7 +170,7 @@ public class UI extends JFrame {
             }
         });
 
-        button_close = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\closeIcon.png"));
+        button_close = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\closeIcon.png"));
         button_close.setToolTipText("Đóng biểu mẫu");
         button_close.addActionListener(new ActionListener() {
             @Override
@@ -169,7 +183,7 @@ public class UI extends JFrame {
             }
         });
 
-        button_excel = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\excelIcon.png"));
+        button_excel = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\excelIcon.png"));
         button_excel.setToolTipText("Xuất ra Excel(xlsx)");
         button_excel.addActionListener(new ActionListener() {
             @Override
@@ -178,23 +192,23 @@ public class UI extends JFrame {
             }
         });
 
-        button_chart = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\chartIcon.png"));
+        button_chart = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\chartIcon.png"));
         button_chart.setToolTipText("Xuất biểu đồ");
         bar_chart = new JMenuItem("Biểu đồ cột");
-        bar_chart.setIcon(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\barIcon.png"));
+        bar_chart.setIcon(new ImageIcon("src\\basicComponents\\imageIcon\\barIcon.png"));
         bar_chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BarChart barChart = new BarChart(0,0,"");
+                BarChart barChart = new BarChart(Database.getInstance(),"",0,0);
 
             }
         });
         pie_chart = new JMenuItem("Biểu đồ tròn");
-        pie_chart.setIcon(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\pieIcon.png"));
+        pie_chart.setIcon(new ImageIcon("src\\basicComponents\\imageIcon\\pieIcon.png"));
         pie_chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PieChart pieChart = new PieChart(0,0,"");
+                PieChart pieChart = new PieChart(Database.getInstance(),"",0,0);
             }
         });
         button_chart.addActionListener(new ActionListener() {
@@ -293,7 +307,7 @@ public class UI extends JFrame {
                 }
 
                 UI ui = new UI();
-                CostTemplate a = new CostTemplate("Chi phí 2017");
+                CostTemplate a = new CostTemplate("2017");
                 a.setContents(ContentParser.parseContents("costcontents.txt"));
                 DefaultTemplate b = new DefaultTemplate();
                 b.setContents(ContentParser.parseContents("costContents.txt"));
