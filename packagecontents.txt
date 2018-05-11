@@ -1,0 +1,24 @@
+﻿Số gói thầu 
+Tên gói thầu
+Hình thức
+Chi phí theo Kế hoạch năm được duyệt
+Giá trị gói thầu
+Số Tờ trình
+Ngày Tờ trình
+Số Hợp đồng
+Tên đối tác
+Ngày hợp đồng
+Loại hợp đồng
+Giá trị hợp đồng
+Hóa đơn	
+	Số HĐ
+	Ngày HĐ	
+	Giá trị trước VAT
+	VAT	
+	Tổng cộng
+Giá trị thanh quyết toán
+Tiết kiệm - Hiệu quả
+	Giá trị tiết kiệm
+	Tỷ lệ % tiết kiệm
+	Lý do - Hiệu quả
+Ghi chú	

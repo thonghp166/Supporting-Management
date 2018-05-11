@@ -1,0 +1,51 @@
+﻿Chi phí phương tiện vận tải
+	Thuê bãi để xe cho CBCNV
+	Chi phí xăng, dầu xe Văn phòng
+	Chi phí thuê xe đưa đón CBCNV
+	Chi phí dịch vụ định vị xe ô tô GPS
+	Chi phí rửa xe, nước thơm, cốc lọc
+	Chi phí sửa chữa, bảo dưỡng xe ô tô
+	Chi phí thuê bãi để xe ô tô
+	Chi phí khấu hao xe 
+	Chi phí tiền lương của lái xe
+	Chi phí phát sinh
+Chi phí bảo trì, bảo dưỡng các hệ thống đầu tư các cơ sở hạ tầng của tòa nhà
+	Chi phí sửa chữa định kỳ - Bảo trì hệ thống thang máy.
+	Chi phí sửa chữa định kỳ - Bảo trì hệ thống điều hòa, thông gió.
+	Chi phí phát sinh
+Chi phí sửa chữa thường xuyên cải tạo thay thế
+	Chi phí sửa chữa thường xuyên - (thay thiết bị điện, nước, điều hòa …)
+	Chi phí sửa chữa bảo dưỡng trang thiết bị VP (điều hòa, máy nổ VP, máy tính máy in…)
+	Chi phí giải đáp, tư vấn,…thuê ngoài (out sourcing)
+	Chi phí thiết kế, xây lắp thuê ngoài
+	Chi phí phát sinh
+Chi phí nhiên liệu điện nước cung cấp cho tòa nhà
+	Chi phí điện văn phòng
+	Chi phí tiền nước sinh hoạt
+	Chi phí xăng, dầu chạy máy nổ
+	Chi phí phát sinh
+Chi phí đảm bảo đời sống cho CBCNV tòa nhà
+	Chi phí thuốc điều trị
+	Chi phí vệ sinh phòng dịch (phun thuốc diệt chuột).
+	Chi phí cung cấp suất ăn cho CBCNV
+	Dịch vụ mua ngoài khác.
+	Chi phí phát sinh
+Chi phí dịch vụ cảnh quan an ninh tòa nhà
+	Chi phí thuê dịch vụ bảo vệ.
+	Chi phí thuê dịch vụ vệ sinh tòa nhà
+	Chi phí dịch vụ thu cẩu, vận chuyển, xử lý rác thải, hút bể phốt
+	Chi phí thuê dịch vụ vệ sinh sân tennis
+	Chi phí chăm sóc ngoại cảnh, thuê cây xanh…
+	Chi phí phát sinh
+Chi phí hành chính thường xuyên
+	Chi phí công cụ dụng cụ quản lý.
+	Chi phí hành chính tòa nhà (hoa tươi, bánh kẹo, chè, nước uống, trái cây, café
+	Chi phí đường truyền (internet, truyền hình cáp, điện thoại cố định…)
+	Chi phí khánh tiết, trang trí bảng biển, pano, áp phích…
+	Chi phí văn phòng phẩm (in sổ ghi chép tòa nhà,…)
+	Chi phí tiền lương phục vụ vận hành tòa nhà
+	Chi phí dịch vụ thuê ngoài (giặt thảm,…)
+	Chi phí bằng tiền khác (tiếp khách,…)
+	Chi phí bảng biển báo
+	Chi phí phát sinh
+Chi phí khấu hao tòa nhà
