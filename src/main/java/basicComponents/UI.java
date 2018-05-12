@@ -119,7 +119,7 @@ public class UI extends JFrame {
         scrollPane_templateUI.getVerticalScrollBar().setUnitIncrement(16);
         //scrollPane_templateUI.setAutoscrolls(false);
         /* set up toolbar buttons */
-        button_save = new JButton(new ImageIcon("src\\basicComponents\\ImageIcon\\saveIcon.png"));
+        button_save = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\ImageIcon\\saveIcon.png"));
         button_save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -157,7 +157,7 @@ public class UI extends JFrame {
             }
         });
 
-        button_clear = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\clearIcon.png"));
+        button_clear = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\clearIcon.png"));
         button_clear.setToolTipText("Xóa");
         button_clear.addActionListener(new ActionListener() {
             @Override
@@ -170,7 +170,7 @@ public class UI extends JFrame {
             }
         });
 
-        button_close = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\closeIcon.png"));
+        button_close = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\closeIcon.png"));
         button_close.setToolTipText("Đóng biểu mẫu");
         button_close.addActionListener(new ActionListener() {
             @Override
@@ -183,7 +183,7 @@ public class UI extends JFrame {
             }
         });
 
-        button_excel = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\excelIcon.png"));
+        button_excel = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\excelIcon.png"));
         button_excel.setToolTipText("Xuất ra Excel(xlsx)");
         button_excel.addActionListener(new ActionListener() {
             @Override
@@ -192,23 +192,30 @@ public class UI extends JFrame {
             }
         });
 
-        button_chart = new JButton(new ImageIcon("src\\basicComponents\\imageIcon\\chartIcon.png"));
+        button_chart = new JButton(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\chartIcon.png"));
         button_chart.setToolTipText("Xuất biểu đồ");
         bar_chart = new JMenuItem("Biểu đồ cột");
-        bar_chart.setIcon(new ImageIcon("src\\basicComponents\\imageIcon\\barIcon.png"));
+        bar_chart.setIcon(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\barIcon.png"));
         bar_chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BarChart barChart = new BarChart(Database.getInstance(),"",0,0);
-
+                if (showingTemplateUI == null) {
+                    JOptionPane.showMessageDialog(null, "Không có biểu mẫu đang mở");
+                    return;
+                }
+                BarChart barChart = new BarChart(showingTemplateUI.getTemplate().getName(),"Cả năm","");
             }
         });
         pie_chart = new JMenuItem("Biểu đồ tròn");
-        pie_chart.setIcon(new ImageIcon("src\\basicComponents\\imageIcon\\pieIcon.png"));
+        pie_chart.setIcon(new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\pieIcon.png"));
         pie_chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PieChart pieChart = new PieChart(Database.getInstance(),"",0,0);
+                if (showingTemplateUI == null) {
+                    JOptionPane.showMessageDialog(null, "Không có biểu mẫu đang mở");
+                    return;
+                }
+                PieChart pieChart = new PieChart(showingTemplateUI.getTemplate().getName(),"Cả năm","");
             }
         });
         button_chart.addActionListener(new ActionListener() {
