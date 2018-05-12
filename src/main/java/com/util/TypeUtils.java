@@ -12,16 +12,16 @@ public class TypeUtils {
     // UI type to SQL type
     private static Hashtable<String, String> SQLTypes = new Hashtable<String, String>() {
         {
-            put("Số", "INT");
-            put("Tự do", "VARCHAR");
+            put("Số", "INT(20)");
+            put("Tự do", "VARCHAR(150)");
         }
     };
 
     // SQL type to chart type
     private static Hashtable<String, TypeEnum> chartTypes = new Hashtable<String, TypeEnum>() {
         {
-            put("INT", TypeEnum.NUMBER);
-            put("VARCHAR", TypeEnum.STRING);
+            put("NUMBER", TypeEnum.NUMBER);
+            put("STRING", TypeEnum.STRING);
         }
     };
 
