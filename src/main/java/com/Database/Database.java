@@ -53,6 +53,26 @@ public interface Database {
     public void dropTable(String tableName);
 
     /**
+     * clear all data of a table
+     * @param tableName name of the table that need to be clear
+     */
+    public void clearTable(String tableName);
+
+    /**
+     * get name of table in database that corresponding to table's name of UI
+     * @param tableName table's name of UI
+     * @return table's name in database
+     */
+    //public String dataTableName(String tableName);
+
+    /**
+     * get number of rows of a table
+     * @param tableName name of the table
+     * @return number of rows
+     */
+    public int getRowCount(String tableName);
+
+    /**
      * get the columns' type of a table under chart type
      * @param tableName name of the table
      * @return list of types
@@ -100,7 +120,23 @@ public interface Database {
      * get all of contents
      * @return list of contents
      */
-    public ArrayList<String> getListContents();
+    public ArrayList<String> getListContents(int year);
+
+    /**
+     * get the parent-content of a sub-content
+     * @param year year of contents
+     * @param subContent sub-content
+     * @return parent-content
+     */
+    public String getParentContent(int year, String subContent);
+
+    /**
+     * get index of a content under String type
+     * @param year year of contents
+     * @param content the content
+     * @return its index
+     */
+    public String getIndexOfContent(int year, String content);
 
     /**
      * get data of table without its name
@@ -110,4 +146,13 @@ public interface Database {
      * @return data
      */
     public ArrayList<ArrayList<String>> getData(int year, int month, String Subcontent);
+
+    /**
+     * update data to a table
+     * @param tableName name of the table
+     * @param data the data
+     */
+    public void updateDataOfTable(String tableName, ArrayList<ArrayList<String>> data);
+
+    //public void updateAllData(int year, )
 }

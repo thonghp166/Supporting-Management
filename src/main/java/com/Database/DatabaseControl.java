@@ -6,12 +6,9 @@ package com.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import com.util.TypeEnum;
-import com.util.TypeUtils;
-import javafx.util.Pair;
+import com.util.*;
 
 
 public class DatabaseControl implements Database {
@@ -59,6 +56,7 @@ public class DatabaseControl implements Database {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(Command);
+            stmt.close();
         } catch (SQLException e) {
             System.out.println("Create Statement Failed!");
             e.printStackTrace();
@@ -105,16 +103,51 @@ public class DatabaseControl implements Database {
     }
 
     @Override
+    public void clearTable(String tableName) {
+        String clear = "TRUNCATE TABLE `" + tableName + "`";
+        callConstantQuery(clear);
+    }
+
+    /**
+    @Override
+    public String dataTableName(String tableName) {
+        ArrayList<String> names = getStringOfColumn("contents", "Nội dung");
+        if (!names.contains(tableName)) {
+            System.out.println("Table is not found!");
+            return "";
+        }
+        return String.valueOf(names.indexOf(tableName)+1);
+    }*/
+
+    @Override
+    public int getRowCount(String tableName) {
+        int rowCount = 0;
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `" + tableName + "`");
+            rs.next();
+            rowCount =  rs.getInt(1);
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Create Statement Failed!");
+            e.printStackTrace();
+        }
+        return rowCount;
+    }
+
+    @Override
     public ArrayList<TypeEnum> getColumnTypes(String tableName) {
         ArrayList<TypeEnum> columnTypes = new ArrayList<>();
         String selectAll = "SELECT * FROM `"+tableName +"` ;";
-
         try {
             PreparedStatement stmt = connection.prepareStatement(selectAll);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             for (int i=2; i<=rsmd.getColumnCount(); i++)
                 columnTypes.add(TypeUtils.getChartType(rsmd.getColumnTypeName(i)));
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println("Create Statement Failed!");
             e.printStackTrace();
@@ -133,6 +166,8 @@ public class DatabaseControl implements Database {
             ResultSetMetaData rsmd = rs.getMetaData();
             for (int i=2; i<=rsmd.getColumnCount(); i++)
                 columnNames.add(rsmd.getColumnName(i));
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println("Create Statement Failed!");
             e.printStackTrace();
@@ -182,71 +217,63 @@ public class DatabaseControl implements Database {
     }
 
     @Override
-    public ArrayList<String> getListContents() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("CHI PHÍ TÒA NHÀ");
-        list.add("Chi phí phương tiện vt");
-        list.add("Tiền nhà");
-        list.add("Tiền điện");
-        list.add("Tiền nước");
-        list.add("CHI PHÍ DI CHUYỂN");
-        list.add("Tiền vé xe");
-        list.add("Tiền sửa xe");
-        return list;
-
-        //return getStringOfColumn("contents", "Nội dung");
+    public ArrayList<String> getListContents(int year) {
+        String tableName = String.valueOf(year) + "#" + "contents";
+        //System.out.println(tableName);
+        return getStringOfColumn(tableName, "Nội dung");
     }
 
     @Override
-    public ArrayList<ArrayList<String>> getData(int year, int month, String Subcontent) {
-        ArrayList<String> contents = getListContents();
-        Subcontent = Subcontent.trim();
-        int index = contents.indexOf(Subcontent);
+    public String getParentContent(int year, String subContent) {
+        ArrayList<String> contents = getListContents(year);
+        subContent = subContent.trim();
+        int index = contents.indexOf(subContent);
         while (index>=0) {
             String name = contents.get(index);
             if (name.compareTo(name.toUpperCase())==0) break;
             index--;
         }
-        if (index<0){
-            System.out.println("List of Contents has an mistake!");
-            ArrayList<ArrayList<String>> data = new ArrayList<>();
-            ArrayList<String> subdata = new ArrayList<>();
-            ArrayList<String> subdata1 = new ArrayList<>();
-            ArrayList<String> subdata2 = new ArrayList<>();
-            subdata.add("CHI PHÍ TÒA NHÀ");
-            subdata.add("Chi phí vật liệu");
-            subdata.add("Chi phí phát sinh");
-            subdata.add("Chi phí xe");
-            subdata.add("CHI PHÍ TIÊU THỤ");
-            subdata.add("Chi phí điện");
-            subdata.add("Chi phí nước");
-            subdata.add("Chi phí VPP");
-            data.add(subdata);
-            subdata1.add("100");
-            subdata1.add("30");
-            subdata1.add("50");
-            subdata1.add("20");
-            subdata1.add("146");
-            subdata1.add("40");
-            subdata1.add("56");
-            subdata1.add("50");
-            data.add(subdata1);
-            subdata2.add("300");
-            subdata2.add("130");
-            subdata2.add("150");
-            subdata2.add("20");
-            subdata2.add("200");
-            subdata2.add("50");
-            subdata2.add("100");
-            subdata2.add("50");
-            data.add(subdata2);
-            return data;
+        if (index<0) {
+            System.out.println("Sub-content is invalid!");
+            return "None";
         }
-        String tableName = String.valueOf(year)+ "#" + String.valueOf(month) + "#" + contents.get(index);
-        if (!Subcontent.equals(Subcontent.toUpperCase())) tableName+= "#" + Subcontent;
-        System.out.println(tableName);
-        return null;
-        //return getDataOfTable(tableName);
+        return contents.get(index);
+    }
+
+    @Override
+    public String getIndexOfContent(int year, String content) {
+        ArrayList<String> contents = getListContents(year);
+        content = content.trim();
+        return String.valueOf(contents.indexOf(content)+1);
+    }
+
+    @Override
+    public ArrayList<ArrayList<String>> getData(int year, int month, String Subcontent) {
+        if (year == 0){
+            System.out.println("List of Contents has an mistake!");
+            System.out.println("Or the data is empty!");
+            return util.defaultData();
+        }
+        Subcontent = Subcontent.trim();
+        String parentContent = getParentContent(year, Subcontent);
+        if (parentContent.equals("None")) return util.defaultData();
+
+        String tableName = String.valueOf(year)+ "#" + String.valueOf(month) + "#" + getIndexOfContent(year, parentContent);
+        if (!Subcontent.equals(Subcontent.toUpperCase())) tableName+= "#" + getIndexOfContent(year, Subcontent);
+        //System.out.println(tableName);
+        //return null;
+
+        return getDataOfTable(tableName);
+    }
+
+    @Override
+    public void updateDataOfTable(String tableName, ArrayList<ArrayList<String>> data) {
+        if (getRowCount(tableName) != data.size()) {
+            System.out.println("Data is not compatible!");
+            return;
+        }
+        clearTable(tableName);
+        insertDataToTable(tableName, data);
     }
 
     @Override
@@ -256,6 +283,8 @@ public class DatabaseControl implements Database {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM `" + tableName + "` ;");
             while (rs.next()) valueList.add(rs.getString(columnName));
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println("Create Statement Failed!");
             e.printStackTrace();
@@ -270,6 +299,8 @@ public class DatabaseControl implements Database {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM `" + tableName + "` ;");
             while (rs.next()) valueList.add(rs.getInt(columnName));
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println("Create Statement Failed!");
             e.printStackTrace();
