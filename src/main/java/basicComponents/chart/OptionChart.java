@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 /**
@@ -46,19 +48,9 @@ public class OptionChart extends JFrame {
         panel.setPreferredSize(new Dimension(300, 300));
         panel.setLayout(new GridBagLayout());
 
-
-        // Return a list of content lv 1 and 2
-        ArrayList<String> listType = Database.getInstance().getListContents();
-        String[] listCont = new String[listType.size()];
-        int i = 0;
-        for (String cont : listType) {
-            if (!cont.equals(cont.toUpperCase()))
-                cont = "    " + cont;
-            listCont[i] = cont;
-            System.out.println(listCont[i]);
-            i++;
-        }
-        typeBox.setModel(new DefaultComboBoxModel<>(listCont));
+        // Xin data base 1 hàm trả về các năm đã lưu trong database
+        String[] yearList = new String[] {"2017","2018","2019"};
+        yearBox.setModel(new DefaultComboBoxModel<>(yearList));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
@@ -66,18 +58,49 @@ public class OptionChart extends JFrame {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(85, 19, 0, 147);
-        panel.add(typeBox, gridBagConstraints);
 
-        yearBox.setModel(new DefaultComboBoxModel<>(new Integer[]{2017, 2018, 2019}));
+        yearBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                typeBox.setModel(new DefaultComboBoxModel<>(getContents((String) e.getItem())));
+            }
+        });
+        panel.add(yearBox, gridBagConstraints);
+
+        yearLabel.setFont(new Font("Tahoma", 0, 18)); // NOI18N
+        yearLabel.setText("Năm");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new Insets(86, 55, 0, 0);
+
+        panel.add(yearLabel, gridBagConstraints);
+
+
+        monthBox.setModel(new DefaultComboBoxModel<>(new String[] {"Cả năm","1","2","3","4","5","6","7","8","9","10","11","12"}));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(18, 19, 0, 147);
-        panel.add(yearBox, gridBagConstraints);
 
-        monthBox.setModel(new DefaultComboBoxModel<>(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
+        panel.add(monthBox, gridBagConstraints);
+
+
+        monthLabel.setFont(new Font("Tahoma", 0, 18)); // NOI18N
+        monthLabel.setText("Tháng");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new Insets(22, 55, 0, 0);
+
+        panel.add(monthLabel, gridBagConstraints);
+
+        typeBox.setModel(new DefaultComboBoxModel<>(this.getContents((String) yearBox.getSelectedItem())));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
@@ -85,43 +108,24 @@ public class OptionChart extends JFrame {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(21, 19, 0, 147);
-        panel.add(monthBox, gridBagConstraints);
+        panel.add(typeBox, gridBagConstraints);
 
         typeLabel.setFont(new Font("Tahoma", 0, 18)); // NOI18N
         typeLabel.setText("Loại chi phí");
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new Insets(86, 55, 0, 0);
-        panel.add(typeLabel, gridBagConstraints);
-
-        yearLabel.setFont(new Font("Tahoma", 0, 18)); // NOI18N
-        yearLabel.setText("Năm");
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new Insets(22, 55, 0, 0);
-        panel.add(yearLabel, gridBagConstraints);
-
-        monthLabel.setFont(new Font("Tahoma", 0, 18)); // NOI18N
-        monthLabel.setText("Tháng");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(22, 55, 0, 0);
-        panel.add(monthLabel, gridBagConstraints);
+        panel.add(typeLabel, gridBagConstraints);
 
         createBtn.setFont(new Font("Tahoma", 0, 18)); // NOI18N
         createBtn.setText("Tạo");
         createBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createChart((Integer) yearBox.getSelectedItem(), (Integer) monthBox.getSelectedItem(),
+                createChart((String) yearBox.getSelectedItem(), (String) monthBox.getSelectedItem(),
                         (String) typeBox.getSelectedItem(), chartPanel);
             }
         });
@@ -162,11 +166,26 @@ public class OptionChart extends JFrame {
         pack();
     }
 
+    private String[] getContents(String year) {
+        // Return a list of content lv 1 and 2
+        ArrayList<String> listType = Database.getInstance().getListContents(year);
+        String[] listCont = new String[listType.size()];
+        int i = 0;
+        for (String cont : listType) {
+            if (!cont.equals(cont.toUpperCase()))
+                cont = "    " + cont;
+            listCont[i] = cont;
+            System.out.println(listCont[i]);
+            i++;
+        }
+        return listCont;
+    }
+
     private void cancelBtnActionPerformed(ActionEvent evt) {
         this.dispose();
     }
 
-    private void createChart( Integer year, Integer month, String content,ChartPanel chartPanel) {
+    private void createChart(String year, String month, String content, ChartPanel chartPanel) {
         if (SwingUtilities.getWindowAncestor(chartPanel) instanceof BarChart) {
             BarChart barChart = new BarChart(year,month,content);
         } else {
@@ -178,11 +197,11 @@ public class OptionChart extends JFrame {
     private JButton createBtn;
     private JButton cancelBtn;
     private JPanel panel;
-    private JComboBox<Integer> monthBox;
+    private JComboBox<String> monthBox;
     private JLabel monthLabel;
     private JComboBox<String> typeBox;
     private JLabel typeLabel;
-    private JComboBox<Integer> yearBox;
+    private JComboBox<String> yearBox;
     private JLabel yearLabel;
 
 }
