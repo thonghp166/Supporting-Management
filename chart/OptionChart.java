@@ -168,14 +168,17 @@ public class OptionChart extends JFrame {
 
     private String[] getContents(String year) {
         // Return a list of content lv 1 and 2
-        ArrayList<String> listType = Database.getInstance().getListContents(year);
+        Database DB = Database.getInstance();
+        DB.ConnectToDatabase();
+        ArrayList<String> listType = DB.getListContents(year);
+        DB.Disconnect();
         String[] listCont = new String[listType.size()];
         int i = 0;
         for (String cont : listType) {
             if (!cont.equals(cont.toUpperCase()))
                 cont = "    " + cont;
             listCont[i] = cont;
-            System.out.println(listCont[i]);
+            //System.out.println(listCont[i]);
             i++;
         }
         return listCont;
@@ -188,8 +191,10 @@ public class OptionChart extends JFrame {
     private void createChart(String year, String month, String content, ChartPanel chartPanel) {
         if (SwingUtilities.getWindowAncestor(chartPanel) instanceof BarChart) {
             BarChart barChart = new BarChart(year,month,content);
+            dispose();
         } else {
             PieChart pieChart = new PieChart(year,month,content);
+            dispose();
         }
         SwingUtilities.getWindowAncestor(chartPanel).dispose();
     }

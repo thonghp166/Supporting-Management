@@ -39,12 +39,13 @@ public class ToolChart extends JToolBar {
         rearrangeBtn = new JButton();
         printBtn = new JButton();
         viewLabelItem = new JCheckBox("Hiển thị giá trị");
-        optBtn = new JButton("Tuỳ chọn");
+        optBtn = new JButton();
 
         //{
         ImageIcon save = new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\saveIcon.png");
         saveAsPNGBtn.setIcon(save);
-        saveAsPNGBtn.setText("Lưu Ảnh");
+//        saveAsPNGBtn.setText("Lưu Ảnh");
+        saveAsPNGBtn.setToolTipText("Lưu ảnh");
         saveAsPNGBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         saveAsPNGBtn.setFocusable(true);
         saveAsPNGBtn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -65,7 +66,8 @@ public class ToolChart extends JToolBar {
 
         ImageIcon zOut = new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\zoomOutIcon.png");
         zoomOutBtn.setIcon(zOut);
-        zoomOutBtn.setText("Thu nhỏ");
+//        zoomOutBtn.setText("Thu nhỏ");
+        zoomOutBtn.setToolTipText("Thu nhỏ");
         zoomOutBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         zoomOutBtn.setFocusable(true);
         zoomOutBtn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -82,7 +84,8 @@ public class ToolChart extends JToolBar {
 
         ImageIcon zIn = new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\zoomInIcon.png");
         zoomInBtn.setIcon(zIn);
-        zoomInBtn.setText("Phóng to");
+//        zoomInBtn.setText("Phóng to");
+        zoomInBtn.setToolTipText("Phóng to");
         zoomInBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         zoomInBtn.setFocusable(true);
         zoomInBtn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -99,7 +102,8 @@ public class ToolChart extends JToolBar {
 
         ImageIcon arr = new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\arrangeIcon.png");
         rearrangeBtn.setIcon(arr);
-        rearrangeBtn.setText("Xếp lại");
+//        rearrangeBtn.setText("Xếp lại");
+        rearrangeBtn.setToolTipText("Xếp lại");
         rearrangeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         rearrangeBtn.setFocusable(true);
         rearrangeBtn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -116,7 +120,8 @@ public class ToolChart extends JToolBar {
 
         ImageIcon print = new ImageIcon("src\\main\\java\\basicComponents\\imageIcon\\printIcon.png");
         printBtn.setIcon(print);
-        printBtn.setText("In ra");
+//        printBtn.setText("In ra");
+        printBtn.setToolTipText("In ra");
         printBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         printBtn.setFocusable(true);
         printBtn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -138,7 +143,7 @@ public class ToolChart extends JToolBar {
         optBtn.setHorizontalTextPosition(SwingConstants.CENTER);
         optBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
         optBtn.setMnemonic(KeyEvent.VK_V);
-        optBtn.setToolTipText("Ctrl V");
+        optBtn.setToolTipText("Tùy chon");
         optBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

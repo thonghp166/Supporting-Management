@@ -1,13 +1,16 @@
 package basicComponents.chart;
 
 import com.Database.Database;
+import com.util.util;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.MultiplePiePlot;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.util.TableOrder;
 
 import javax.swing.*;
@@ -21,6 +24,8 @@ public class PieChart extends JFrame {
     private JFreeChart chart;
     /* panel with chart */
     private ChartPanel chartPanel;
+
+    private JPanel panel;
 
     /**
      * Public constructor
@@ -36,6 +41,7 @@ public class PieChart extends JFrame {
         this.setVisible(true);
         this.setMinimumSize(new Dimension(960, 600));
         this.setTitle("Biểu đồ");
+
         /*
         Create chart in a panel
          */
@@ -67,7 +73,7 @@ public class PieChart extends JFrame {
         Set title of chart
          */
         if (!content.equals(""))
-            chart.setTitle("Biểu đồ tỷ lệ" + content.toLowerCase() +
+            chart.setTitle("Biểu đồ tỷ lệ " + content.toLowerCase().trim() +
                     " tháng " + String.valueOf(month) + " năm " + String.valueOf(year));
         else if (month.equals("Cả năm"))
             chart.setTitle("Biểu đồ tỷ lệ" + " năm " + String.valueOf(year));
@@ -91,6 +97,9 @@ public class PieChart extends JFrame {
         p.setMaximumLabelWidth(0.25);
         p.setLabelFont(new Font("SansSerif", Font.BOLD, 12));
         p.setInteriorGap(0.0);
+
+        LegendTitle legendTitle = chart.getLegend();
+        legendTitle.setPosition(RectangleEdge.LEFT);
         /*
          * End setting up bar chart
          */
@@ -113,12 +122,15 @@ public class PieChart extends JFrame {
         ArrayList<Double> thucte = new ArrayList<>();
 
         // Get from database the data in year/month/content
-        ArrayList<ArrayList<String>> data = Database.getInstance().getData(year, month, content);
+        Database DB = Database.getInstance();
+        DB.ConnectToDatabase();
+        ArrayList<ArrayList<String>> data = DB.getData(year, month, content);
+        DB.Disconnect();
 
-        for (int i = 0; i < data.get(0).size(); i++) {
-            listContent.add(data.get(0).get(i));
-            dukien.add(Double.valueOf(data.get(1).get(i)));
-            thucte.add(Double.valueOf(data.get(2).get(i)));
+        for (int i = 0; i < data.size(); i++) {
+            listContent.add(data.get(i).get(0));
+            dukien.add(util.stringToDouble(data.get(i).get(1)));
+            thucte.add(util.stringToDouble(data.get(i).get(2)));
         }
         // row keys
         String series1 = "Dự kiến";
@@ -147,6 +159,11 @@ public class PieChart extends JFrame {
         toolChart.getZoomOutBtn().setEnabled(false);
         this.setLayout(new BorderLayout());
         this.add(toolChart, BorderLayout.NORTH);
+//        panel = new JPanel();
+        chartPanel.setMinimumSize(this.getSize());
+//        panel.add(chartPanel);
+////        panel.setLayout(new FlowLayout());
+//        this.add(panel);
         this.add(chartPanel);
     }
 

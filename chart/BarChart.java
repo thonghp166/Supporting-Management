@@ -1,6 +1,7 @@
 package basicComponents.chart;
 
 import com.Database.Database;
+import com.util.util;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -81,7 +82,7 @@ public class BarChart extends JFrame {
         Set title of chart
          */
         if (!content.equals(""))
-            chart.setTitle("Biểu đồ " + content.toLowerCase() + " tháng " + String.valueOf(month) + " năm " + String.valueOf(year));
+            chart.setTitle("Biểu đồ " + content.toLowerCase().trim() + " tháng " + String.valueOf(month) + " năm " + String.valueOf(year));
         else if (month.equals("Cả năm")) {
             chart.setTitle("Biểu đồ " + content.toLowerCase() + " năm " + String.valueOf(year));
         } else chart.setTitle("Biểu đồ chi phí");
@@ -95,6 +96,10 @@ public class BarChart extends JFrame {
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
 
+        CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+        domainAxis.setMaximumCategoryLabelLines(4);
+
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
@@ -102,8 +107,8 @@ public class BarChart extends JFrame {
         renderer.setDrawBarOutline(false);
         renderer.setItemMargin(0.0);
 
-        final CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
+//        final CategoryAxis domainAxis = plot.getDomainAxis();
+//        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 3.5));
 
         renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(
@@ -125,12 +130,16 @@ public class BarChart extends JFrame {
         ArrayList<Double> thucte = new ArrayList<>();
 
         // Get from database the data in year/month/content
-        ArrayList<ArrayList<String>> data = Database.getInstance().getData(year, month, content);
+        Database DB = Database.getInstance();
+        DB.ConnectToDatabase();
+        //System.out.println(year + " " + month + " " + content);
+        ArrayList<ArrayList<String>> data = DB.getData(year, month, content);
+        DB.Disconnect();
 
-        for (int i = 0; i < data.get(0).size(); i++) {
-            listContent.add(data.get(0).get(i));
-            dukien.add(Double.valueOf(data.get(1).get(i)));
-            thucte.add(Double.valueOf(data.get(2).get(i)));
+        for (int i = 0; i < data.size(); i++) {
+            listContent.add(data.get(i).get(0));
+            dukien.add(util.stringToDouble(data.get(i).get(1)));
+            thucte.add(util.stringToDouble(data.get(i).get(2)));
         }
         // row keys
         String series1 = "Dự kiến";
@@ -167,4 +176,3 @@ public class BarChart extends JFrame {
         return toolChart;
     }
 }
-
