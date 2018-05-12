@@ -36,11 +36,11 @@ public class BarChart extends JFrame {
     /**
      * Public constructor
      *
-     * @param content  : Content header for chart
-     * @param month    : The data come from what month?
      * @param year     : The data come from what year?
+     * @param month    : The data come from what month?
+     * @param content  : Content header for chart
      */
-    public BarChart (Integer year, Integer month, String content) {
+    public BarChart (String year, String month, String content) {
         /*
         Setting default for frame
          */
@@ -64,12 +64,12 @@ public class BarChart extends JFrame {
     /**
      * Initialize chart
      *
-     * @param content  : Content header for chart
-     * @param month    : The data come from what month?
      * @param year     : The data come from what year?
+     * @param month    : The data come from what month?
+     * @param content  : Content header for chart
      * @return a chart
      */
-    private JFreeChart initChart( Integer year, Integer month, String content) {
+    private JFreeChart initChart(String year, String month, String content) {
         /*
         Initialize the set of data to make chart
          */
@@ -82,7 +82,7 @@ public class BarChart extends JFrame {
          */
         if (!content.equals(""))
             chart.setTitle("Biểu đồ " + content.toLowerCase() + " tháng " + String.valueOf(month) + " năm " + String.valueOf(year));
-        else if (month == -1) {
+        else if (month.equals("Cả năm")) {
             chart.setTitle("Biểu đồ " + content.toLowerCase() + " năm " + String.valueOf(year));
         } else chart.setTitle("Biểu đồ chi phí");
         chart.getTitle().setFont(new Font("Arial", Font.BOLD, 24));
@@ -118,7 +118,7 @@ public class BarChart extends JFrame {
         return chart;
     }
 
-    private DefaultCategoryDataset createDataset(Integer year, Integer month, String content) {
+    private DefaultCategoryDataset createDataset(String year, String month, String content) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         ArrayList<String> listContent = new ArrayList<>();
         ArrayList<Double> dukien = new ArrayList<>();
